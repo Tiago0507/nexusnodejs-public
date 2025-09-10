@@ -1,4 +1,3 @@
-// models/User.ts
 import mongoose, { Schema, model, Types } from "mongoose";
 import type { HydratedDocument, Model } from "mongoose";
 
@@ -9,7 +8,7 @@ export interface IUser {
   firstName: string;
   lastName: string;
   email: string;
-  passwordHash: string; 
+  passwordHash: string;
   role?: IRole;
   permission?: IPermission;
 }
@@ -20,7 +19,7 @@ export interface UserMethods {
 }
 
 export type UserDocument = HydratedDocument<IUser, UserMethods>;
-export interface UserModel extends Model<IUser, {}, UserMethods> {}
+export interface UserModel extends Model<IUser, {}, UserMethods> { }
 
 const RoleSchema = new Schema<IRole>({
   _id: { type: Schema.Types.ObjectId, required: true },
@@ -36,7 +35,7 @@ const PermissionSchema = new Schema<IPermission>({
 
 const UserSchema = new Schema<IUser, UserModel, UserMethods>({
   firstName: { type: String, trim: true, required: true },
-  lastName:  { type: String, trim: true, required: true },
+  lastName: { type: String, trim: true, required: true },
   email: {
     type: String, required: true, lowercase: true, unique: true, index: true, trim: true,
     validate: { validator: (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), message: "Email inválido" }

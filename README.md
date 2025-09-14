@@ -81,8 +81,23 @@ Make sure you have the following software installed on your system:
     # JWT Secret Key
     JWT_SECRET=your_super_secret_key
     ```
+4. **Database Setup**
+    The application requires a running MongoDB instance.
 
-4.  **Running the Application**
+    **1. Start MongoDB with Docker:** Run the following command in your terminal to start a MongoDB container. This only needs to be done once.
+   
+   ```bash
+    docker run --name nexus-mongo -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=password -d mongo
+   ```
+    **2. Seed the Database:** Before starting the application for the first time, you must run the seed script to create the essential roles (admin, organizer, buyer)         and the initial admin user.
+
+    Run the following command from the project's root directory:
+
+    ```Bash
+    npm run db:seed
+    ```
+   
+5.  **Running the Application**
     To start the server in development mode with automatic restarts on file changes, run:
     ```bash
     npm run dev

@@ -1,14 +1,14 @@
 import bcrypt from "bcryptjs";
-import type { UserDocument } from "./user.model";
-import User from "./user.model";
-import Role from "./role.model";
+import type { UserDocument } from "./user.model.js";
+import User from "./user.model.js";
+import Role from "./role.model.js";
 import {
   BadRequestError,
   ConflictError,
   NotFoundError,
-} from "../../utils/errors/ApiError";
-import type { CreateUserDto } from "./dto/create-user.dto";
-import type { UpdateUserDto } from "./dto/update-user.dto";
+} from "../../utils/errors/ApiError.js";
+import type { CreateUserDto } from "./dto/create-user.dto.js";
+import type { UpdateUserDto } from "./dto/update-user.dto.js";
 
 export class UserService {
   public async findAllUsers(): Promise<UserDocument[]> {
@@ -21,6 +21,14 @@ export class UserService {
       throw new NotFoundError("Usuario no encontrado.");
     }
     return user;
+  }
+
+  public async findUserByEmailWithPassword(
+    email: string
+  ): Promise<UserDocument | null> {
+    return User.findOne({ email: email.toLowerCase() })
+      .select("+passwordHash")
+      .populate("role");
   }
 
   public async findUserByEmail(email: string): Promise<UserDocument> {

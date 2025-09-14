@@ -1,7 +1,6 @@
-// models/User.ts
 import mongoose, { Schema, model, Types } from "mongoose";
 import type { HydratedDocument, Model } from "mongoose";
-import type { RoleDocument } from "./role.model";
+import type { RoleDocument } from "./role.model.js";
 
 export interface IUser {
   firstName: string;

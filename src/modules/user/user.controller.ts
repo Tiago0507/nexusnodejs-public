@@ -1,7 +1,8 @@
 import type { Request, Response } from "express";
 
-import { UserService } from "./user.service";
-import { ApiError, BadRequestError } from "../../utils/errors/ApiError";
+import { UserService } from "./user.service.js";
+import { ApiError, BadRequestError } from "../../utils/errors/ApiError.js";
+import type { UserDocument } from "./user.model.js";
 
 class UserController {
   constructor(private userService: UserService) {}
@@ -54,6 +55,15 @@ class UserController {
     }
   }
 
+  public async getCurrentUser(req: Request, res: Response): Promise<void> {
+    try {
+      const user = req.user as UserDocument;
+      res.status(200).json(user);
+    } catch (error) {
+      this.handleError(error, res);
+    }
+  }
+
   public async updateUser(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
@@ -65,6 +75,22 @@ class UserController {
         );
       }
       const updatedUser = await this.userService.updateUser(id, req.body);
+      res.status(200).json(updatedUser);
+    } catch (error) {
+      this.handleError(error, res);
+    }
+  }
+
+  public async updateCurrentUser(req: Request, res: Response): Promise<void> {
+    try {
+      const userId = (req.user as UserDocument).id;
+      const { firstName, lastName } = req.body;
+      const allowedUpdates = { firstName, lastName };
+
+      const updatedUser = await this.userService.updateUser(
+        userId,
+        allowedUpdates
+      );
       res.status(200).json(updatedUser);
     } catch (error) {
       this.handleError(error, res);

@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
-import { RoleService } from "./role.service";
-import { ApiError, BadRequestError } from "../../utils/errors/ApiError";
+import { RoleService } from "./role.service.js";
+import { ApiError, BadRequestError } from "../../utils/errors/ApiError.js";
 
 class RoleController {
   constructor(private roleService: RoleService) {}

@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import createHttpError from "http-errors";
-import service from "./ticket.service.js";
-import { assertCreateTicketDTO, sanitizeUpdateTicketDTO } from "./dto/index.js";
+import service from "./ticket.service";
+import { assertCreateTicketDTO, sanitizeUpdateTicketDTO } from "./dto/index";
 
 function qstr(q: unknown): string | undefined {
     return typeof q === "string" && q.length > 0 ? q : undefined;

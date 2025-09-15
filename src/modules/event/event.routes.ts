@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { eventController } from './event.controller.js';
-import { authenticate } from '../auth/middlewares/authentication.middleware.js';
-import { hasPermission } from '../auth/middlewares/authorization.middleware.js';
+import { eventController } from './event.controller';
+import { authenticate } from '../auth/middlewares/authentication.middleware';
+import { hasPermission } from '../auth/middlewares/authorization.middleware';
 
 const router = Router();
 

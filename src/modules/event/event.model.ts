@@ -1,5 +1,5 @@
 import { Schema, model, Document, Types } from 'mongoose';
-import type { UserDocument } from '../user/user.model.js';
+import type { UserDocument } from '../user/user.model';
 
 export interface IVenue {
   name: string;

@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express';
-import { EventService } from './event.service.js';
-import { ApiError } from '../../utils/errors/ApiError.js';
-import type { UserDocument } from '../user/user.model.js';
-import type { RoleDocument } from '../user/role.model.js';
+import { EventService } from './event.service';
+import { ApiError } from '../../utils/errors/ApiError';
+import type { UserDocument } from '../user/user.model';
+import type { RoleDocument } from '../user/role.model';
 
 const eventService = new EventService();
 

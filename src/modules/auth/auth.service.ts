@@ -1,11 +1,11 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import type { SignOptions } from "jsonwebtoken";
-import type { UserService } from "../user/user.service.js";
-import type { RegisterDto } from "./dto/register.dto.js";
-import type { LoginDto } from "./dto/login.dto.js";
-import type { UserDocument } from "../user/user.model.js";
-import { ApiError, BadRequestError } from "../../utils/errors/ApiError.js";
+import type { UserService } from "../user/user.service";
+import type { RegisterDto } from "./dto/register.dto";
+import type { LoginDto } from "./dto/login.dto";
+import type { UserDocument } from "../user/user.model";
+import { ApiError, BadRequestError } from "../../utils/errors/ApiError";
 
 export class AuthService {
   constructor(private userService: UserService) {}

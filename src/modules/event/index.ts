@@ -1,7 +1,7 @@
-export * from './dto/create-event.dto.js';
-export * from './dto/update-event.dto.js';
+export * from './dto/create-event.dto';
+export * from './dto/update-event.dto';
 
-export * from './event.model.js';
-export * from './event.service.js';
-export * from './event.controller.js';
-export { default as eventRoutes } from './event.routes.js';
+export * from './event.model';
+export * from './event.service';
+export * from './event.controller';
+export { default as eventRoutes } from './event.routes';

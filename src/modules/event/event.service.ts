@@ -1,11 +1,11 @@
 import { Types } from 'mongoose';
-import EventModel from './event.model.js';
-import type { IEvent } from './event.model.js';
-import type { CreateEventDto } from './dto/create-event.dto.js';
-import type { UpdateEventDto } from './dto/update-event.dto.js';
-import { NotFoundError, ConflictError } from '../../utils/errors/ApiError.js';
+import EventModel from './event.model';
+import type { IEvent } from './event.model';
+import type { CreateEventDto } from './dto/create-event.dto';
+import type { UpdateEventDto } from './dto/update-event.dto';
+import { NotFoundError, ConflictError } from '../../utils/errors/ApiError';
 
-// import PurchaseModel from '../purchase/purchase.model.js';
+// import PurchaseModel from '../purchase/purchase.model';
 
 interface IEventFilters {
   page?: number;

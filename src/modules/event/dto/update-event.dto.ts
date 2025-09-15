@@ -1,4 +1,4 @@
-import type { IVenue } from '../event.model.js';
+import type { IVenue } from '../event.model';
 
 export class UpdateEventDto {
   title?: string;

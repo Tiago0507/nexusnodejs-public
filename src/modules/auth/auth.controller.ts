@@ -1,8 +1,8 @@
-import { AuthService } from "./auth.service.js";
-import { UserService } from "../user/user.service.js";
-import { ApiError } from "../../utils/errors/ApiError.js";
+import { AuthService } from "./auth.service";
+import { UserService } from "../user/user.service";
+import { ApiError } from "../../utils/errors/ApiError";
 import type { Request, Response } from "express";
-import type { RefreshTokenDto } from "./dto/token.dto.js";
+import type { RefreshTokenDto } from "./dto/token.dto";
 
 class AuthController {
   constructor(private authService: AuthService) {}

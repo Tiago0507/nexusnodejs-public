@@ -1,11 +1,10 @@
 import express from "express";
 import type { Request, Response } from "express";
 import dotenv from "dotenv";
-import authRoutes from "./modules/auth/auth.routes.js";
-import userRoutes from "./modules/user/user.routes.js";
-import roleRoutes from "./modules/user/role.routes.js";
-import eventRoutes from './modules/event/event.routes.js';
-import {ticketRoutes} from "./modules/ticket/index.js";
+import authRoutes from "./modules/auth/auth.routes";
+import userRoutes from "./modules/user/user.routes";
+import roleRoutes from "./modules/user/role.routes";
+import eventRoutes from './modules/event/event.routes';
 
 dotenv.config();
 

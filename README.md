@@ -130,8 +130,7 @@ The project includes a comprehensive suite of unit tests to ensure code quality 
 A Postman collection is included in the `resources/` directory to facilitate API testing.
 
 1.  **Create an Environment:** In Postman, create a new environment. Add a variable named `baseURL` with the value `http://localhost:3000/api/v1`.  
-    Since the project has also been deployed to the cloud, you can alternatively set the `baseURL` to the deployed endpoint:  
-    `https://nodejs-nexus.onrender.com/api/v1`.
+    Since the project has also been deployed to the cloud, you can alternatively set the `baseURL` to the deployed endpoint: `https://nodejs-nexus.onrender.com/api/v1`.
 
 2.  **Import the Collection:** Click on "Import" and select the `.json` file located in the `resources/` folder of this project. The imported requests will automatically use the `baseURL` variable.
 

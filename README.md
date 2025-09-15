@@ -97,6 +97,8 @@ Ensure you have the following software installed on your system:
         npm run db:seed
         ```
 
+        **Note:** Since the project has already been deployed to the cloud, if you plan to use the cloud deployment you **must not run the seed script**, as the database is already populated in that environment.
+
 5.  **Running the Application**
     To start the server in development mode (with automatic restarts), run:
     ```bash
@@ -127,7 +129,10 @@ The project includes a comprehensive suite of unit tests to ensure code quality 
 
 A Postman collection is included in the `resources/` directory to facilitate API testing.
 
-1.  **Create an Environment:** In Postman, create a new environment. Add a variable named `baseURL` with the value `http://localhost:3000/api/v1`.
+1.  **Create an Environment:** In Postman, create a new environment. Add a variable named `baseURL` with the value `http://localhost:3000/api/v1`.  
+    Since the project has also been deployed to the cloud, you can alternatively set the `baseURL` to the deployed endpoint:  
+    `https://nodejs-nexus.onrender.com/api/v1`.
+
 2.  **Import the Collection:** Click on "Import" and select the `.json` file located in the `resources/` folder of this project. The imported requests will automatically use the `baseURL` variable.
 
 ---
@@ -193,6 +198,19 @@ This project is deployed to the cloud to ensure continuous availability.
 
 -   **Database**: The production database is hosted on **MongoDB Atlas**, utilizing their free M0 cluster tier.
 -   **Application**: The Node.js API is deployed as a Web Service on **Render**, connected directly to the GitHub repository for continuous deployment. Environment variables, including the `MONGO_URI` for Atlas and JWT secrets, are securely configured in the Render dashboard.
+
+### **Cloud Deployment**
+
+In addition to local setup, this project has been deployed to the cloud for public access.  
+You can access the live API at the following link:
+
+[https://nodejs-nexus.onrender.com](https://nodejs-nexus.onrender.com)
+
+-   **Base URL for API requests:**  
+    ```
+    https://nodejs-nexus.onrender.com/api/v1
+    ```
+-   **Note:** Since the production database is already seeded with the required roles and an initial admin user, **you must not run the seed script** (`npm run db:seed`) when using the cloud deployment.
 
 ---
 

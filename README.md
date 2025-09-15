@@ -112,16 +112,26 @@ Ensure you have the following software installed on your system:
 
 The project includes a comprehensive suite of unit tests to ensure code quality and reliability.
 
+-   **Install testing dependencies (recommended):**
+    ```bash
+    npm install --save-dev supertest
+    ```
+
 -   **Run all tests:**
     ```bash
     npm test
     ```
+
 -   **Generate a coverage report:**
     To check if the project meets the 80% coverage requirement, run:
     ```bash
     npm test -- --coverage
     ```
     A detailed HTML report will be generated in the `coverage/` directory.
+
+_Current coverage: approximately **90%**_    
+
+<img width="1361" height="648" alt="image" src="https://github.com/user-attachments/assets/24027065-c766-4484-ab81-230ba0814bc4" />
 
 ---
 

@@ -5,7 +5,7 @@ import type { CreateEventDto } from './dto/create-event.dto';
 import type { UpdateEventDto } from './dto/update-event.dto';
 import { NotFoundError, ConflictError } from '../../utils/errors/ApiError';
 
-// import PurchaseModel from '../purchase/purchase.model';
+import PurchaseModel from '../purchase/purchase.model';
 
 interface IEventFilters {
   page?: number;
@@ -125,12 +125,12 @@ export class EventService {
    * @throws {NotFoundError} If the event does not exist.
    */
   public async deleteEvent(id: string): Promise<void> {
-    const purchaseCount = 0;
+    const purchaseCount = await PurchaseModel.countDocuments({ event: new Types.ObjectId(id) });
 
     if (purchaseCount > 0) {
-      throw new ConflictError("No se puede eliminar el evento porque tiene compras aprobadas.");
+      throw new ConflictError("No se puede eliminar el evento porque ya tiene compras asociadas.");
     }
-    
+
     const deletedEvent = await EventModel.findByIdAndDelete(id);
     if (!deletedEvent) {
       throw new NotFoundError("Evento no encontrado para eliminar.");

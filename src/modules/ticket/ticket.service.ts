@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import mongoose from "mongoose";
 import createHttpError from "http-errors";
-import TicketModel, { type TicketDocument } from "./ticket.model.js";
+import TicketModel, { type TicketDocument } from "./ticket.model";
 
 function genCode(): string {
   return crypto.randomBytes(4).toString("hex");

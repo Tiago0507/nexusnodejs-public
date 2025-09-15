@@ -5,6 +5,8 @@ import authRoutes from "./modules/auth/auth.routes";
 import userRoutes from "./modules/user/user.routes";
 import roleRoutes from "./modules/user/role.routes";
 import eventRoutes from './modules/event/event.routes';
+import purchaseRoutes from './modules/purchase/purchase.routes';
+import ticketRoutes from './modules/ticket/ticket.routes';
 
 dotenv.config();
 
@@ -21,6 +23,8 @@ app.use("/api/v1/roles", roleRoutes);
 app.use("/api/v1/events", eventRoutes);
 
 app.use("/api/v1", ticketRoutes);
+
+app.use("/api/v1/purchases", purchaseRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("API de TicketHub funcionando!");

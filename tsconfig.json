@@ -29,6 +29,6 @@
     "moduleDetection": "force",
     "skipLibCheck": true
   },
-  "include": ["src/**/*", "tests/**/*", "src/seed.ts"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src/**/*", "src/seed.ts"],
+  "exclude": ["node_modules", "dist", "src/tests"]
 }

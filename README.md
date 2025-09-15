@@ -123,6 +123,15 @@ The project includes a comprehensive suite of unit tests to ensure code quality 
 
 ---
 
+### Postman Integration
+
+A Postman collection is included in the `resources/` directory to facilitate API testing.
+
+1.  **Create an Environment:** In Postman, create a new environment. Add a variable named `baseURL` with the value `http://localhost:3000/api/v1`.
+2.  **Import the Collection:** Click on "Import" and select the `.json` file located in the `resources/` folder of this project. The imported requests will automatically use the `baseURL` variable.
+
+---
+
 ### API Endpoints
 
 The base URL for all endpoints is `/api/v1`.

@@ -1,16 +1,15 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
+  preset: "ts-jest",
 
-    preset: "ts-jest",
+  testEnvironment: "node",
 
-    testEnvironment: "node",
+  clearMocks: true,
 
-    clearMocks: true,
+  setupFilesAfterEnv: ["./jest.setup.js"],
 
-    setupFilesAfterEnv: ["./jest.setup.js"],
-
-    coveragePathIgnorePatterns: [
-        "/node_modules/",
-        ".model.ts"
-    ],
+  coveragePathIgnorePatterns: [
+    "/node_modules/",
+    ".model.ts"
+  ],
 };

@@ -1,0 +1,397 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcdef123456",
+		"name": "TicketHub",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Setup & Login Admin",
+			"item": [
+				{
+					"name": "Login Admin (Seed)",
+					"event": [{
+						"listen": "test",
+						"script": {
+							"exec": [
+								"pm.test(\"Admin Token guardado\", function () {",
+								"    var jsonData = pm.response.json();",
+								"    pm.collectionVariables.set(\"admin_token\", jsonData.accessToken);",
+								"});"
+							],
+							"type": "text/javascript"
+						}
+					}],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@tickethub.com\",\n    \"password\": \"AdminPass123!\"\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": {
+							"raw": "{{baseURL}}/auth/login",
+							"host": ["{{baseURL}}"],
+							"path": ["auth", "login"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2. CRUD de Roles (Admin)",
+			"item": [
+				{
+					"name": "POST (Crear) Rol de Prueba",
+					"event": [{
+						"listen": "test",
+						"script": {
+							"exec": [
+								"pm.test(\"Test Role ID guardado\", function () {",
+								"    var jsonData = pm.response.json();",
+								"    pm.collectionVariables.set(\"test_role_id\", jsonData.id);",
+								"});"
+							],
+							"type": "text/javascript"
+						}
+					}],
+					"request": {
+						"auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{admin_token}}", "type": "string" }] },
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"tester\",\n    \"description\": \"Rol para pruebas automatizadas.\",\n    \"permissions\": [\"view_events\"]\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": { "raw": "{{baseURL}}/roles", "host": ["{{baseURL}}"], "path": ["roles"] }
+					},
+					"response": []
+				},
+				{
+					"name": "GET (Leer) Todos los Roles",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{admin_token}}", "type": "string" }] },
+						"method": "GET",
+						"header": [],
+						"url": { "raw": "{{baseURL}}/roles", "host": ["{{baseURL}}"], "path": ["roles"] }
+					},
+					"response": []
+				},
+				{
+					"name": "GET (Leer) Rol de Prueba por ID",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{admin_token}}", "type": "string" }] },
+						"method": "GET",
+						"header": [],
+						"url": { "raw": "{{baseURL}}/roles/{{test_role_id}}", "host": ["{{baseURL}}"], "path": ["roles", "{{test_role_id}}"] }
+					},
+					"response": []
+				},
+				{
+					"name": "PUT (Actualizar) Rol de Prueba",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{admin_token}}", "type": "string" }] },
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"Rol para pruebas (descripción actualizada).\"\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": { "raw": "{{baseURL}}/roles/{{test_role_id}}", "host": ["{{baseURL}}"], "path": ["roles", "{{test_role_id}}"] }
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE (Eliminar) Rol de Prueba",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{admin_token}}", "type": "string" }] },
+						"method": "DELETE",
+						"header": [],
+						"url": { "raw": "{{baseURL}}/roles/{{test_role_id}}", "host": ["{{baseURL}}"], "path": ["roles", "{{test_role_id}}"] }
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "3. Flujo de Organizador y CRUD de Evento",
+			"item": [
+				{
+					"name": "POST (Crear) Organizador",
+					"event": [{
+						"listen": "test",
+						"script": { "exec": ["pm.test(\"Organizer User ID guardado\", function(){ var jsonData = pm.response.json(); pm.collectionVariables.set(\"organizer_id\", jsonData.user.id); });"], "type": "text/javascript" }
+					}],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": { "mode": "raw", "raw": "{\n    \"firstName\": \"Carlos\",\n    \"lastName\": \"Organizador\",\n    \"email\": \"organizer.test@tickethub.com\",\n    \"password\": \"Password123!\",\n    \"role\": \"organizer\"\n}", "options": { "raw": { "language": "json" } } },
+						"url": { "raw": "{{baseURL}}/auth/register", "host": ["{{baseURL}}"], "path": ["auth", "register"] }
+					},
+					"response": []
+				},
+				{
+					"name": "Login Organizador",
+					"event": [{
+						"listen": "test",
+						"script": { "exec": ["pm.test(\"Organizer Token guardado\", function(){ var jsonData = pm.response.json(); pm.collectionVariables.set(\"organizer_token\", jsonData.accessToken); });"], "type": "text/javascript" }
+					}],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": { "mode": "raw", "raw": "{\n    \"email\": \"organizer.test@tickethub.com\",\n    \"password\": \"Password123!\"\n}", "options": { "raw": { "language": "json" } } },
+						"url": { "raw": "{{baseURL}}/auth/login", "host": ["{{baseURL}}"], "path": ["auth", "login"] }
+					},
+					"response": []
+				},
+				{
+					"name": "POST (Crear) Evento",
+					"event": [{
+						"listen": "test",
+						"script": { "exec": ["pm.test(\"Event ID y Ticket Type IDs guardados\", function(){ var jsonData = pm.response.json(); pm.collectionVariables.set(\"event_id\", jsonData._id); pm.collectionVariables.set(\"ticket_type_id_general\", jsonData.ticketTypes[0]._id); pm.collectionVariables.set(\"ticket_type_id_vip\", jsonData.ticketTypes[1]._id); });"], "type": "text/javascript" }
+					}],
+					"request": {
+						"auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{organizer_token}}", "type": "string" }] },
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Festival de Jazz de Cali\",\n    \"description\": \"Presentando a los mejores artistas de jazz locales e internacionales.\",\n    \"date\": \"2025-11-22T20:00:00.000Z\",\n    \"category\": \"Concierto\",\n    \"venue\": {\n        \"name\": \"Plaza de Toros\",\n        \"address\": \"Cra. 56 #3-00\",\n        \"city\": \"Cali\",\n        \"capacity\": 16000\n    },\n    \"ticketTypes\": [\n        {\n            \"category\": \"General\",\n            \"price\": 120000,\n            \"quantityAvailable\": 500\n        },\n        {\n            \"category\": \"VIP\",\n            \"price\": 400000,\n            \"quantityAvailable\": 100\n        }\n    ]\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": { "raw": "{{baseURL}}/events", "host": ["{{baseURL}}"], "path": ["events"] }
+					},
+					"response": []
+				},
+				{
+					"name": "GET (Leer) Evento por ID (Aún no publicado)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": { "raw": "{{baseURL}}/events/{{event_id}}", "host": ["{{baseURL}}"], "path": ["events", "{{event_id}}"] }
+					},
+					"response": []
+				},
+				{
+					"name": "PUT (Actualizar) Evento",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{organizer_token}}", "type": "string" }] },
+						"method": "PUT",
+						"header": [],
+						"body": { "mode": "raw", "raw": "{\n    \"description\": \"¡Descripción actualizada! Artistas confirmados: Grupo Niche.\"\n}", "options": { "raw": { "language": "json" } } },
+						"url": { "raw": "{{baseURL}}/events/{{event_id}}", "host": ["{{baseURL}}"], "path": ["events", "{{event_id}}"] }
+					},
+					"response": []
+				},
+				{
+					"name": "PUT (Aprobar) Evento (Admin)",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{admin_token}}", "type": "string" }] },
+						"method": "PUT",
+						"header": [],
+						"body": { "mode": "raw", "raw": "{\n    \"status\": \"published\"\n}", "options": { "raw": { "language": "json" } } },
+						"url": { "raw": "{{baseURL}}/events/{{event_id}}", "host": ["{{baseURL}}"], "path": ["events", "{{event_id}}"] }
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4. Flujo de Comprador y Compra",
+			"item": [
+				{
+					"name": "POST (Crear) Comprador",
+					"event": [{
+						"listen": "test",
+						"script": { "exec": ["pm.test(\"Buyer User ID guardado\", function(){ var jsonData = pm.response.json(); pm.collectionVariables.set(\"buyer_id\", jsonData.user.id); });"], "type": "text/javascript" }
+					}],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": { "mode": "raw", "raw": "{\n    \"firstName\": \"Lucia\",\n    \"lastName\": \"Compradora\",\n    \"email\": \"buyer.test@tickethub.com\",\n    \"password\": \"Password123!\",\n    \"role\": \"buyer\"\n}", "options": { "raw": { "language": "json" } } },
+						"url": { "raw": "{{baseURL}}/auth/register", "host": ["{{baseURL}}"], "path": ["auth", "register"] }
+					},
+					"response": []
+				},
+				{
+					"name": "Login Comprador",
+					"event": [{
+						"listen": "test",
+						"script": { "exec": ["pm.test(\"Buyer Token guardado\", function(){ var jsonData = pm.response.json(); pm.collectionVariables.set(\"buyer_token\", jsonData.accessToken); });"], "type": "text/javascript" }
+					}],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": { "mode": "raw", "raw": "{\n    \"email\": \"buyer.test@tickethub.com\",\n    \"password\": \"Password123!\"\n}", "options": { "raw": { "language": "json" } } },
+						"url": { "raw": "{{baseURL}}/auth/login", "host": ["{{baseURL}}"], "path": ["auth", "login"] }
+					},
+					"response": []
+				},
+				{
+					"name": "GET (Leer) Eventos Públicos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": { "raw": "{{baseURL}}/events", "host": ["{{baseURL}}"], "path": ["events"] }
+					},
+					"response": []
+				},
+				{
+					"name": "POST (Crear) Compra",
+					"event": [{
+						"listen": "test",
+						"script": { "exec": ["pm.test(\"Purchase y Ticket IDs guardados\", function(){ var jsonData = pm.response.json(); pm.collectionVariables.set(\"purchase_id\", jsonData.purchase._id); pm.collectionVariables.set(\"ticket_id\", jsonData.tickets[0]._id); });"], "type": "text/javascript" }
+					}],
+					"request": {
+						"auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{buyer_token}}", "type": "string" }] },
+						"method": "POST",
+						"header": [],
+						"body": { "mode": "raw", "raw": "{\n    \"eventId\": \"{{event_id}}\",\n    \"ticketTypeId\": \"{{ticket_type_id_general}}\",\n    \"quantity\": 2\n}", "options": { "raw": { "language": "json" } } },
+						"url": { "raw": "{{baseURL}}/purchases", "host": ["{{baseURL}}"], "path": ["purchases"] }
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "5. Gestión de Tickets y Compras (Admin)",
+			"item": [
+				{
+					"name": "GET (Leer) Todos los Tickets",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{admin_token}}", "type": "string" }] },
+						"method": "GET",
+						"header": [],
+						"url": { "raw": "{{baseURL}}/tickets", "host": ["{{baseURL}}"], "path": ["tickets"] }
+					},
+					"response": []
+				},
+				{
+					"name": "GET (Leer) Ticket por ID",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{admin_token}}", "type": "string" }] },
+						"method": "GET",
+						"header": [],
+						"url": { "raw": "{{baseURL}}/tickets/{{ticket_id}}", "host": ["{{baseURL}}"], "path": ["tickets", "{{ticket_id}}"] }
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "6. Gestión de Usuarios (Admin)",
+			"item": [
+				{
+					"name": "GET (Leer) Todos los Usuarios",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{admin_token}}", "type": "string" }] },
+						"method": "GET",
+						"header": [],
+						"url": { "raw": "{{baseURL}}/users", "host": ["{{baseURL}}"], "path": ["users"] }
+					},
+					"response": []
+				},
+				{
+					"name": "GET (Leer) Organizador por ID",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{admin_token}}", "type": "string" }] },
+						"method": "GET",
+						"header": [],
+						"url": { "raw": "{{baseURL}}/users/{{organizer_id}}", "host": ["{{baseURL}}"], "path": ["users", "{{organizer_id}}"] }
+					},
+					"response": []
+				},
+				{
+					"name": "PUT (Actualizar) Organizador",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{admin_token}}", "type": "string" }] },
+						"method": "PUT",
+						"header": [],
+						"body": { "mode": "raw", "raw": "{\n    \"lastName\": \"Organizador-Actualizado\"\n}", "options": { "raw": { "language": "json" } } },
+						"url": { "raw": "{{baseURL}}/users/{{organizer_id}}", "host": ["{{baseURL}}"], "path": ["users", "{{organizer_id}}"] }
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "7. Pruebas de Autorización (403 Forbidden)",
+			"item": [
+				{
+					"name": "Organizador intenta ver todos los usuarios",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{organizer_token}}", "type": "string" }] },
+						"method": "GET",
+						"header": [],
+						"url": { "raw": "{{baseURL}}/users", "host": ["{{baseURL}}"], "path": ["users"] }
+					},
+					"response": []
+				},
+				{
+					"name": "Comprador intenta crear un evento",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{buyer_token}}", "type": "string" }] },
+						"method": "POST",
+						"header": [],
+						"body": { "mode": "raw", "raw": "{\n    \"title\": \"Evento Falso\"\n}", "options": { "raw": { "language": "json" } } },
+						"url": { "raw": "{{baseURL}}/events", "host": ["{{baseURL}}"], "path": ["events"] }
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "8. Limpieza (Admin)",
+			"item": [
+				{
+					"name": "DELETE (Eliminar) Evento Creado",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{admin_token}}", "type": "string" }] },
+						"method": "DELETE",
+						"header": [],
+						"url": { "raw": "{{baseURL}}/events/{{event_id}}", "host": ["{{baseURL}}"], "path": ["events", "{{event_id}}"] }
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE (Eliminar) Organizador Creado",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{admin_token}}", "type": "string" }] },
+						"method": "DELETE",
+						"header": [],
+						"url": { "raw": "{{baseURL}}/users/{{organizer_id}}", "host": ["{{baseURL}}"], "path": ["users", "{{organizer_id}}"] }
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE (Eliminar) Comprador Creado",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{admin_token}}", "type": "string" }] },
+						"method": "DELETE",
+						"header": [],
+						"url": { "raw": "{{baseURL}}/users/{{buyer_id}}", "host": ["{{baseURL}}"], "path": ["users", "{{buyer_id}}"] }
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{ "key": "baseURL", "value": "http://localhost:3000/api/v1" },
+		{ "key": "admin_token", "value": "" },
+		{ "key": "organizer_token", "value": "" },
+		{ "key": "buyer_token", "value": "" },
+		{ "key": "organizer_id", "value": "" },
+		{ "key": "buyer_id", "value": "" },
+		{ "key": "event_id", "value": "" },
+		{ "key": "purchase_id", "value": "" },
+		{ "key": "ticket_id", "value": "" },
+		{ "key": "ticket_type_id_general", "value": "" },
+		{ "key": "ticket_type_id_vip", "value": "" },
+		{ "key": "test_role_id", "value": "" }
+	]
+}

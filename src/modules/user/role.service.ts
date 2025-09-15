@@ -1,9 +1,9 @@
-import type { RoleDocument } from "../user/role.model.js";
-import { ConflictError, NotFoundError } from "../../utils/errors/ApiError.js";
-import type { CreateRoleDto } from "./dto/create-role.dto.js";
-import type { UpdateRoleDto } from "./dto/update-role.dto.js";
-import User from "./user.model.js";
-import Role from "./role.model.js";
+import type { RoleDocument } from "../user/role.model";
+import { ConflictError, NotFoundError } from "../../utils/errors/ApiError";
+import type { CreateRoleDto } from "./dto/create-role.dto";
+import type { UpdateRoleDto } from "./dto/update-role.dto";
+import User from "./user.model";
+import Role from "./role.model";
 
 export class RoleService {
   public async findAllRoles(): Promise<RoleDocument[]> {

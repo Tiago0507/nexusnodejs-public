@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import { ApiError } from "../../../utils/errors/ApiError.js";
-import { UserService } from "../../user/user.service.js";
+import { ApiError } from "../../../utils/errors/ApiError";
+import { UserService } from "../../user/user.service";
 import type { NextFunction, Request, Response } from "express";
 
 declare global {

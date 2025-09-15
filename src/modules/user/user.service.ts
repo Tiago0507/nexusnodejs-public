@@ -1,14 +1,14 @@
 import bcrypt from "bcryptjs";
-import type { UserDocument } from "./user.model.js";
-import User from "./user.model.js";
-import Role from "./role.model.js";
+import type { UserDocument } from "./user.model";
+import User from "./user.model";
+import Role from "./role.model";
 import {
   BadRequestError,
   ConflictError,
   NotFoundError,
-} from "../../utils/errors/ApiError.js";
-import type { CreateUserDto } from "./dto/create-user.dto.js";
-import type { UpdateUserDto } from "./dto/update-user.dto.js";
+} from "../../utils/errors/ApiError";
+import type { CreateUserDto } from "./dto/create-user.dto";
+import type { UpdateUserDto } from "./dto/update-user.dto";
 
 export class UserService {
   public async findAllUsers(): Promise<UserDocument[]> {

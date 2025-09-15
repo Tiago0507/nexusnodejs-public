@@ -1,4 +1,4 @@
-import type { IVenue, ITicketType } from '../event.model.js';
+import type { IVenue, ITicketType } from '../event.model';
 
 export class CreateEventDto {
   title!: string;

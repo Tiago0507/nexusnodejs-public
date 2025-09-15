@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
 
-import { UserService } from "./user.service.js";
-import { ApiError, BadRequestError } from "../../utils/errors/ApiError.js";
-import type { UserDocument } from "./user.model.js";
+import { UserService } from "./user.service";
+import { ApiError, BadRequestError } from "../../utils/errors/ApiError";
+import type { UserDocument } from "./user.model";
 
 class UserController {
   constructor(private userService: UserService) {}

@@ -18,20 +18,28 @@ interface IEventFilters {
   dateTo?: string;
 }
 
+/**
+ * Service responsible for event domain operations.
+ * It performs creation, querying with filters, single retrieval, updating, and deletion
+ * while enforcing business rules such as visibility and deletion constraints.
+ */
 export class EventService {
   /**
    * Creates a new event in the database.
    * Assigns the organizer ID and sets the initial status to 'pending approval'.
-   * @param eventData Data for the event to create.
-   * @param organizerId ID of the user with the 'organizer' role.
+   *
+   * @param eventData - Data for the event to create.
+   * @param organizerId - ID of the user with the 'organizer' role.
    * @returns The document for the newly created event.
    */
   public async createEvent(eventData: CreateEventDto, organizerId: string): Promise<IEvent> {
+    // Builds a new event document, setting organizer and initial workflow status.
     const event = new EventModel({
       ...eventData,
       organizer: new Types.ObjectId(organizerId),
       status: 'pending-approval',
     });
+    // Persists the event in the database.
     await event.save();
     return event;
   }
@@ -39,8 +47,9 @@ export class EventService {
   /**
    * Searches and returns a list of events using filters and simple pagination.
    * Applies a key business rule: buyers only see 'published' events.
-   * @param filters Object with the filtering parameters.
-   * @param userRole Role of the user making the request.
+   *
+   * @param filters - Object with the filtering parameters.
+   * @param userRole - Role of the user making the request.
    * @returns An array of event documents.
    */
   public async findAllEvents(filters: IEventFilters, userRole?: string): Promise<IEvent[]> {
@@ -48,28 +57,34 @@ export class EventService {
     const query: any = {};
 
     // Visibility by role.
+    // Buyers or unauthenticated users see only published events; privileged roles may filter status explicitly.
     if (!userRole || userRole === 'buyer') {
       query.status = 'published';
     } else if (filterParams.status) {
       query.status = filterParams.status;
     }
 
-    // Dynamic construction of the query based on the filters
+    // Dynamic construction of the query based on the filters.
     if (filterParams.search) {
+      // Case-insensitive title search.
       query.title = { $regex: filterParams.search, $options: 'i' };
     }
     if (filterParams.category) {
       query.category = filterParams.category;
     }
     if (filterParams.city) {
+      // Filters by embedded venue city field.
       query['venue.city'] = filterParams.city;
     }
     if (filterParams.dateFrom || filterParams.dateTo) {
+      // Builds a date range filter when at least one bound is provided.
       query.date = {};
       if (filterParams.dateFrom) query.date.$gte = new Date(filterParams.dateFrom);
       if (filterParams.dateTo) query.date.$lte = new Date(filterParams.dateTo);
     }
 
+    // Executes the query with population of organizer public fields, ordering by upcoming date,
+    // and applying basic pagination (limit/skip).
     return await EventModel.find(query)
       .populate('organizer', 'firstName lastName email')
       .sort({ date: 1 })
@@ -80,24 +95,29 @@ export class EventService {
 
   /**
    * Searches for a single event by its ID.
-   * @param id The ID of the event to search for.
+   *
+   * @param id - The ID of the event to search for.
    * @returns The document for the found event.
    * @throws {NotFoundError} If no event with that ID is found.
    */
   public async findEventById(id: string): Promise<IEvent> {
+    // Retrieves the event and includes organizer basic identity fields.
     const event = await EventModel.findById(id).populate('organizer', 'firstName lastName email');
     if (!event) {
+      // Signals absence of the requested resource.
       throw new NotFoundError("Evento no encontrado.");
     }
     return event;
   }
-  
+
   /**
    * Finds all events created by a specific organizer.
-   * @param organizerId The ID of the organizing user.
+   *
+   * @param organizerId - The ID of the organizing user.
    * @returns An array of event documents.
    */
   public async findEventsByOrganizer(organizerId: string): Promise<IEvent[]> {
+    // Filters by organizer ObjectId, sorts by most recently created first, and populates organizer identity.
     return EventModel.find({ organizer: new Types.ObjectId(organizerId) })
       .populate('organizer', 'firstName lastName email')
       .sort({ createdAt: -1 });
@@ -105,12 +125,14 @@ export class EventService {
 
   /**
    * Updates an existing event.
-   * @param id The ID of the event to update.
-   * @param updateData The fields to modify.
+   *
+   * @param id - The ID of the event to update.
+   * @param updateData - The fields to modify.
    * @returns The updated event document.
    * @throws {NotFoundError} If the event does not exist.
    */
   public async updateEvent(id: string, updateData: UpdateEventDto): Promise<IEvent> {
+    // Applies a partial update and returns the new version of the document.
     const updatedEvent = await EventModel.findByIdAndUpdate(id, updateData, { new: true });
     if (!updatedEvent) {
       throw new NotFoundError("Evento no encontrado para actualizar.");
@@ -120,17 +142,20 @@ export class EventService {
 
   /**
    * Deletes an event from the database.
-   * @param id The ID of the event to delete.
+   *
+   * @param id - The ID of the event to delete.
    * @throws {ConflictError} If the event has purchases and cannot be deleted.
    * @throws {NotFoundError} If the event does not exist.
    */
   public async deleteEvent(id: string): Promise<void> {
+    // Prevents deletion when there are existing purchases linked to the event.
     const purchaseCount = await PurchaseModel.countDocuments({ event: new Types.ObjectId(id) });
 
     if (purchaseCount > 0) {
       throw new ConflictError("No se puede eliminar el evento porque ya tiene compras asociadas.");
     }
 
+    // Attempts deletion and signals when the resource does not exist.
     const deletedEvent = await EventModel.findByIdAndDelete(id);
     if (!deletedEvent) {
       throw new NotFoundError("Evento no encontrado para eliminar.");

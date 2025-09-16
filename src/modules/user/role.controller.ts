@@ -2,9 +2,22 @@ import type { Request, Response } from "express";
 import { RoleService } from "./role.service";
 import { ApiError, BadRequestError } from "../../utils/errors/ApiError";
 
+/**
+ * Controller for handling Role-related HTTP requests.
+ * It manages CRUD (Create, Read, Update, Delete) operations for roles.
+ */
 class RoleController {
+  /**
+   * Initializes a new instance of the RoleController.
+   * @param {RoleService} roleService - The service responsible for role business logic.
+   */
   constructor(private roleService: RoleService) {}
 
+  /**
+   * Retrieves all roles.
+   * @param {Request} _req - The Express request object (unused).
+   * @param {Response} res - The Express response object.
+   */
   public async getAllRoles(_req: Request, res: Response): Promise<void> {
     try {
       const roles = await this.roleService.findAllRoles();
@@ -14,6 +27,11 @@ class RoleController {
     }
   }
 
+  /**
+   * Retrieves a single role by its ID.
+   * @param {Request} req - The Express request object, containing the role ID in params.
+   * @param {Response} res - The Express response object.
+   */
   public async getRoleById(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
@@ -27,6 +45,11 @@ class RoleController {
     }
   }
 
+  /**
+   * Creates a new role.
+   * @param {Request} req - The Express request object, containing the new role data in the body.
+   * @param {Response} res - The Express response object.
+   */
   public async createRole(req: Request, res: Response): Promise<void> {
     try {
       const newRole = await this.roleService.createRole(req.body);
@@ -36,6 +59,11 @@ class RoleController {
     }
   }
 
+  /**
+   * Updates an existing role.
+   * @param {Request} req - The Express request object, containing the role ID and update data.
+   * @param {Response} res - The Express response object.
+   */
   public async updateRole(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
@@ -49,6 +77,11 @@ class RoleController {
     }
   }
 
+  /**
+   * Deletes a role by its ID.
+   * @param {Request} req - The Express request object, containing the role ID in params.
+   * @param {Response} res - The Express response object.
+   */
   public async deleteRole(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
@@ -56,12 +89,19 @@ class RoleController {
         throw new BadRequestError("El ID del rol es requerido.");
       }
       await this.roleService.deleteRole(id);
+      // Sends a 204 No Content response upon successful deletion.
       res.status(204).send();
     } catch (error) {
       this.handleError(error, res);
     }
   }
 
+  /**
+   * Centralized error handler for the controller.
+   * Formats and sends an appropriate error response based on the error type.
+   * @param {unknown} error - The caught error object.
+   * @param {Response} res - The Express response object.
+   */
   private handleError(error: unknown, res: Response): void {
     if (error instanceof ApiError) {
       res.status(error.statusCode).json({
@@ -69,6 +109,7 @@ class RoleController {
       });
       return;
     }
+    // Logs any unexpected errors to the console.
     console.error(error);
     res.status(500).json({
       error: { code: "INTERNAL_ERROR", message: "Error interno del servidor." },
@@ -76,4 +117,5 @@ class RoleController {
   }
 }
 
+// Creates and exports a single instance of the RoleController with its dependency.
 export const roleController = new RoleController(new RoleService());

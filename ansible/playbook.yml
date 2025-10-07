@@ -1,0 +1,7 @@
+---
+- name: Provision SonarQube VM
+  hosts: sonarqube
+  become: true
+  roles:
+    - docker
+    - sonarqube

@@ -1,0 +1,2 @@
+# Ignore sensitive local configuration
+terraform.tfvars

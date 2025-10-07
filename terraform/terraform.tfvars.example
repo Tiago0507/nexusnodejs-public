@@ -1,0 +1,12 @@
+resource_group_name = "sonarqube-rg-tiago0507"
+location            = "eastus"
+vm_name             = "sonarqube-vm-tiago0507"
+vm_size             = "Standard_B2s"
+admin_username      = "azureuser"
+admin_password      = "TuContraseñaSegura123!"
+
+# Etiqueta DNS para FQDN público (minúsculas, números y guiones; único por región)
+public_ip_dns_label = "nexus-sonar-tiago0507"
+
+# Azure Subscription ID (define this locally, do not commit real value)
+subscription_id = "YOUR_SUBSCRIPTION_ID"

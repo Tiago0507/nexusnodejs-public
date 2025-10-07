@@ -1,0 +1,7 @@
+# .trivyignore - Ignorar vulnerabilidades específicas
+# Formato: CVE-YYYY-NNNNN
+
+# Ejemplo: Ignorar CVE específico con justificación
+# CVE-2021-12345 # No aplica a nuestro caso de uso
+
+# Agregar CVEs específicos que necesites ignorar con justificación

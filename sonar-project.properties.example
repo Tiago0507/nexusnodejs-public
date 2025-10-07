@@ -1,0 +1,16 @@
+sonar.host.url=http://VM_IP:9000
+
+sonar.projectKey=nexusnodejs-public
+sonar.projectName=Nexus NodeJS
+sonar.projectVersion=1.0.0
+
+sonar.sources=src
+sonar.tests=src/tests
+sonar.sourceEncoding=UTF-8
+
+sonar.typescript.lcov.reportPaths=coverage/lcov.info
+
+sonar.exclusions=**/node_modules/**,**/dist/**,**/coverage/**,**/tests/**
+sonar.coverage.exclusions=**/tests/**,**/seed.ts
+
+sonar.token=YOUR_TOKEN_HERE

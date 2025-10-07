@@ -1,0 +1,38 @@
+---
+- name: Instalar dependencias para Docker
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+    state: present
+    update_cache: yes
+
+- name: Agregar GPG key de Docker
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Agregar repositorio de Docker
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu jammy stable
+    state: present
+
+- name: Instalar Docker
+  apt:
+    name: docker-ce
+    state: present
+    update_cache: yes
+
+- name: Instalar Docker Compose
+  get_url:
+    url: https://github.com/docker/compose/releases/download/v2.24.6/docker-compose-linux-x86_64
+    dest: /usr/local/bin/docker-compose
+    mode: '0755'
+
+- name: Agregar usuario al grupo docker
+  user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: yes

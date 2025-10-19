@@ -114,8 +114,6 @@ The local setup produces the following outcomes:
 
 ![SonarQube Local Setup - Project Analysis](/images/image2.jpeg)
 
-![SonarQube Local Setup - Coverage Report](/images/image3.jpeg)
-
 This local setup is suitable for evaluation and initial development, but lacks scalability, automation, and security best practices.
 
 ---
